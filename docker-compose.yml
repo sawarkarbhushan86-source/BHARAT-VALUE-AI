@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  bharat-value-ai:
+    build: .
+    container_name: bharat_value_ai_app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=Bharat Value AI
+      - APP_ENV=production
+      - DEBUG=false
+      - DATABASE_URL=sqlite:///./data/bharat_value_ai.db
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

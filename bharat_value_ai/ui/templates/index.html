@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BHARAT VALUE AI — Indian Stock Intelligence & Research Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Plotly.js for Institutional Financial Charts -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <div id="app-container">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo-icon">BV</div>
+        <div>
+          <div class="brand-title">BHARAT VALUE AI</div>
+          <div class="brand-subtitle">Indian Equity Intelligence</div>
+        </div>
+      </div>
+
+      <div class="nav-section-title">Core Intelligence</div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-item active" data-view="market"><span class="nav-icon">📊</span> <span class="nav-text">Market Overview</span></a></li>
+        <li><a href="#" class="nav-item" data-view="screener"><span class="nav-icon">🔍</span> <span class="nav-text">Stock Screener</span></a></li>
+        <li><a href="#" class="nav-item" data-view="details"><span class="nav-icon">📈</span> <span class="nav-text">Stock Details</span></a></li>
+        <li><a href="#" class="nav-item" data-view="fundamentals"><span class="nav-icon">📑</span> <span class="nav-text">Fundamental Analysis</span></a></li>
+      </ul>
+
+      <div class="nav-section-title">Valuation & Growth</div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-item" data-view="valuation"><span class="nav-icon">⚖️</span> <span class="nav-text">Fair-Value Calculator</span></a></li>
+        <li><a href="#" class="nav-item" data-view="growth"><span class="nav-icon">🚀</span> <span class="nav-text">Quality & Multibagger</span></a></li>
+        <li><a href="#" class="nav-item" data-view="risk"><span class="nav-icon">⚠️</span> <span class="nav-text">Risk & Governance</span></a></li>
+      </ul>
+
+      <div class="nav-section-title">News & NLP Engine</div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-item" data-view="news"><span class="nav-icon">📰</span> <span class="nav-text">Financial News Feed</span></a></li>
+        <li><a href="#" class="nav-item" data-view="timeline"><span class="nav-icon">⏱️</span> <span class="nav-text">News-to-Price Events</span></a></li>
+        <li><a href="#" class="nav-item" data-view="nlp"><span class="nav-icon">🧠</span> <span class="nav-text">NLP & FinBERT Lab</span></a></li>
+      </ul>
+
+      <div class="nav-section-title">AI & Agentic Research</div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-item" data-view="rag"><span class="nav-icon">💬</span> <span class="nav-text">RAG Research Assistant</span></a></li>
+        <li><a href="#" class="nav-item" data-view="agents"><span class="nav-icon">🤖</span> <span class="nav-text">Multi-Agent Workflow</span></a></li>
+      </ul>
+
+      <div class="nav-section-title">Quantitative Lab</div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-item" data-view="ml"><span class="nav-icon">🧬</span> <span class="nav-text">ML Stock Ranking</span></a></li>
+        <li><a href="#" class="nav-item" data-view="backtest"><span class="nav-icon">📉</span> <span class="nav-text">Strategy Backtesting</span></a></li>
+      </ul>
+
+      <div class="nav-section-title">Exports & Platform</div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-item" data-view="reports"><span class="nav-icon">📥</span> <span class="nav-text">Research Reports</span></a></li>
+        <li><a href="#" class="nav-item" data-view="health"><span class="nav-icon">🩺</span> <span class="nav-text">API & System Health</span></a></li>
+        <li><a href="#" class="nav-item" data-view="settings"><span class="nav-icon">⚙️</span> <span class="nav-text">Platform Settings</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main id="main-content">
+      <!-- Topbar -->
+      <header id="topbar">
+        <div class="search-box-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="global-search" class="search-input" placeholder="Search Indian stock (e.g. CDSL, SUZLON, EXIDEIND)..." autocomplete="off">
+          <div id="search-dropdown" class="card" style="display: none; position: absolute; top: 44px; left: 0; right: 0; z-index: 200; max-height: 280px; overflow-y: auto; padding: 4px;"></div>
+        </div>
+
+        <div class="topbar-right">
+          <span id="market-status-pill" class="market-status-pill">
+            <span class="status-dot green"></span> Connecting to NSE...
+          </span>
+          <span class="badge badge-primary">Active: <b class="active-symbol-badge" style="margin-left: 4px;">CDSL</b></span>
+        </div>
+      </header>
+
+      <!-- Views Container -->
+      <div id="views-container">
+        
+        <!-- 1. Market Overview -->
+        <section id="view-market" class="view-section active">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Indian Market Overview</h2>
+              <p class="page-description">Benchmark indices, market breadth, and Smallcap 100 universe activity.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="App.loadMarketOverview()">↻ Refresh</button>
+          </div>
+          <div id="market-indices-grid" class="grid-4" style="margin-bottom: 20px;"></div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Top Smallcap Gainers Today</div>
+              <div id="market-movers-list"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Data Source & Provenance Status</div>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                • <b>Market Data</b>: Yahoo Finance Indian Feeds (NSE / BSE delayed 15m).<br/>
+                • <b>Exchange Calendar</b>: Indian Trading Hours (09:15 to 15:30 IST).<br/>
+                • <b>Point-in-Time Discipline</b>: Historical financials strictly reflect regulatory disclosure dates.<br/>
+                • <b>Current Universe</b>: Nifty Smallcap 100 constituents + Benchmark Leaders.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Stock Screener -->
+        <section id="view-screener" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Quantitative Stock Screener</h2>
+              <p class="page-description">Filter high-growth, capital-efficient, and undervalued Indian stocks.</p>
+            </div>
+            <button id="btn-run-screener" class="btn btn-primary btn-sm">Apply Filters</button>
+          </div>
+
+          <div class="card" style="margin-bottom: 18px;">
+            <div class="grid-4">
+              <div class="form-group">
+                <label class="form-label">Min ROCE (%)</label>
+                <input type="number" id="filter-min-roce" class="form-input" value="18">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Max P/E Multiple</label>
+                <input type="number" id="filter-max-pe" class="form-input" value="65">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Max Debt/Equity</label>
+                <input type="number" id="filter-max-dte" class="form-input" value="0.8" step="0.1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Min Quality Score</label>
+                <input type="number" id="filter-min-score" class="form-input" value="60">
+              </div>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Price</th>
+                  <th>P/E</th>
+                  <th>ROCE</th>
+                  <th>ROE</th>
+                  <th>Debt/Eq</th>
+                  <th>Quality</th>
+                  <th>Fair Value</th>
+                  <th>Margin of Safety</th>
+                </tr>
+              </thead>
+              <tbody id="screener-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 3. Stock Details -->
+        <section id="view-details" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 id="details-symbol-title" class="page-title">CDSL — NSE</h2>
+              <p class="page-description">Audited technical price action and live market quote snapshot.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-primary btn-sm" onclick="App.navigate('valuation')">Calculate DCF</button>
+              <button class="btn btn-outline btn-sm" onclick="App.navigate('rag')">Research with RAG</button>
+            </div>
+          </div>
+
+          <div class="grid-4" style="margin-bottom: 18px;">
+            <div class="card">
+              <div class="card-title">Last Traded Price</div>
+              <div id="details-price" class="metric-big">₹0.00</div>
+              <div id="details-change" class="metric-change">+0.00%</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Trading Volume</div>
+              <div id="details-volume" class="metric-big">0</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Shares Traded Today</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Turnover (Cr)</div>
+              <div id="details-turnover" class="metric-big">₹0.00 Cr</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Estimated Value</div>
+            </div>
+            <div class="card">
+              <div class="card-title">52-Week Range</div>
+              <div id="details-52w" style="font-size: 15px; font-weight: 700; margin-top: 6px;">₹0 - ₹0</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">P/E: <b id="details-pe">--</b></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div id="stock-candle-chart" style="height: 480px;"></div>
+          </div>
+        </section>
+
+        <!-- 4. Fundamental Analysis -->
+        <section id="view-fundamentals" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Fundamental Analysis & DuPont Decomposition</h2>
+              <p class="page-description">Audited financial statements and capital efficiency breakdowns.</p>
+            </div>
+            <span class="badge badge-primary">Active: <b class="active-symbol-badge">CDSL</b></span>
+          </div>
+
+          <div class="grid-3" style="margin-bottom: 18px;">
+            <div class="card">
+              <div class="card-title">Financial Performance</div>
+              <p style="font-size: 13px; line-height: 1.8;">
+                • Consolidated Revenue: <b id="fund-rev">--</b><br/>
+                • Net Profit (PAT): <b id="fund-pat">--</b><br/>
+                • Operating EBITDA Margin: <b id="fund-ebitda-margin">--</b><br/>
+                • Net Profit Margin: <b id="fund-net-margin">--</b>
+              </p>
+            </div>
+            <div class="card">
+              <div class="card-title">Capital Return & Solvency</div>
+              <p style="font-size: 13px; line-height: 1.8;">
+                • Return on Equity (ROE): <b id="fund-roe" class="positive">--</b><br/>
+                • Return on Capital (ROCE): <b id="fund-roce" class="positive">--</b><br/>
+                • Debt to Equity Ratio: <b id="fund-dte">--</b><br/>
+                • Interest Coverage Ratio: <b id="fund-ic">--</b>
+              </p>
+            </div>
+            <div class="card">
+              <div class="card-title">Cash Flow & Health</div>
+              <p style="font-size: 13px; line-height: 1.8;">
+                • Operating Cash Flow (OCF): <b id="fund-ocf">--</b><br/>
+                • Free Cash Flow (FCF): <b id="fund-fcf">--</b><br/>
+                • Cash Conversion Cycle: <b id="fund-ccc">--</b><br/>
+                • Altman Z-Score: <b id="fund-altman">--</b>
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">DuPont 3-Stage Analysis: Return on Equity Drivers</div>
+            <div class="grid-3" style="margin-bottom: 12px; text-align: center;">
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm);">
+                <small style="color: var(--text-muted);">Net Profit Margin</small><br/>
+                <b id="dupont-npm" style="font-size: 18px; color: var(--primary);">--%</b>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm);">
+                <small style="color: var(--text-muted);">Asset Turnover</small><br/>
+                <b id="dupont-at" style="font-size: 18px; color: var(--primary);">--x</b>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm);">
+                <small style="color: var(--text-muted);">Financial Leverage</small><br/>
+                <b id="dupont-em" style="font-size: 18px; color: var(--primary);">--x</b>
+              </div>
+            </div>
+            <p style="font-size: 13px; color: var(--text-secondary);">
+              <b>Interpretation:</b> <span id="dupont-interpretation">--</span> (Combined ROE: <b id="dupont-roe" class="positive">--</b>)
+            </p>
+          </div>
+        </section>
+
+        <!-- 5. Fair-Value Calculator -->
+        <section id="view-valuation" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Deterministic Fair-Value Engine</h2>
+              <p class="page-description">Explicit 5-Year DCF, sector relative multiples, and sensitivity heatmap.</p>
+            </div>
+            <span class="badge badge-primary">Active: <b class="active-symbol-badge">CDSL</b></span>
+          </div>
+
+          <div class="grid-4" style="margin-bottom: 18px;">
+            <div class="card">
+              <div class="card-title">Current Price</div>
+              <div id="val-cmp" class="metric-big">₹0.00</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Composite Fair Value</div>
+              <div id="val-composite" class="metric-big" style="color: var(--primary);">₹0.00</div>
+            </div>
+            <div class="card">
+              <div class="card-title">DCF Intrinsic Value</div>
+              <div id="val-dcf" class="metric-big">₹0.00</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Margin of Safety</div>
+              <div style="margin-top: 6px;"><span id="val-mos-badge" class="badge badge-success">--</span></div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom: 18px;">
+            <div class="card">
+              <div class="card-title">Interactive DCF Growth & Discount Controls</div>
+              
+              <div class="form-group">
+                <label class="form-label">Forecast Revenue Growth Rate (5Y CAGR)</label>
+                <div class="slider-container">
+                  <input type="range" id="dcf-growth-slider" class="form-range" min="0.05" max="0.40" step="0.01" value="0.18">
+                  <span id="dcf-growth-val" class="slider-value">18.0%</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Discount Rate (WACC / Required Return)</label>
+                <div class="slider-container">
+                  <input type="range" id="dcf-wacc-slider" class="form-range" min="0.09" max="0.18" step="0.005" value="0.12">
+                  <span id="dcf-wacc-val" class="slider-value">12.0%</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Terminal Growth Rate (Gordon Growth)</label>
+                <div class="slider-container">
+                  <input type="range" id="dcf-terminal-slider" class="form-range" min="0.03" max="0.07" step="0.005" value="0.05">
+                  <span id="dcf-terminal-val" class="slider-value">5.0%</span>
+                </div>
+              </div>
+
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm); margin-top: 16px;">
+                <p style="font-size: 12px; color: var(--text-muted);">
+                  Bear Case: <b id="val-bear" style="color: var(--danger);">₹0.00</b> | 
+                  Base Case: <b id="val-base" style="color: var(--primary);">₹0.00</b> | 
+                  Bull Case: <b id="val-bull" style="color: var(--success);">₹0.00</b>
+                </p>
+                <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                  Relative Multiples: P/E Target: <b id="val-pe">₹0.00</b> | EV/EBITDA Target: <b id="val-ev">₹0.00</b>
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div id="dcf-sensitivity-chart" style="height: 320px;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Business Quality & Growth -->
+        <section id="view-growth" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Business Quality & Multibagger Framework</h2>
+              <p class="page-description">Institutional 5-pillar compounding analysis over a 5–10 year horizon.</p>
+            </div>
+            <span class="badge badge-primary">Active: <b class="active-symbol-badge">CDSL</b></span>
+          </div>
+
+          <div class="grid-2" style="margin-bottom: 18px;">
+            <div class="card">
+              <div class="card-title">Compounding Pillar Scores</div>
+              <div style="font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 4px;" id="qual-composite">--/100</div>
+              <div style="margin-bottom: 14px;"><span class="badge badge-success" id="qual-tier">--</span></div>
+
+              <p style="font-size: 13px; line-height: 1.8;">
+                • <b>Business Moat & Pricing Power</b>: <span id="qual-moat">--</span><br/>
+                • <b>Financial Strength & Returns</b>: <span id="qual-fin">--</span><br/>
+                • <b>Long-Term Growth Runway</b>: <span id="qual-growth">--</span><br/>
+                • <b>Valuation Attractiveness</b>: <span id="qual-val">--</span><br/>
+                • <b>Governance & Solvency Health</b>: <span id="qual-gov">--</span>
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Framework Assumptions & Limitations</div>
+              <ul id="qual-limitations-list" style="font-size: 13px; color: var(--text-secondary); line-height: 1.7; padding-left: 18px;"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Financial News Feed -->
+        <section id="view-news" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Financial News & Announcement Feed</h2>
+              <p class="page-description">Live RSS feeds from Moneycontrol, Economic Times, and official corporate filings.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="App.loadNewsFeed()">↻ Refresh News</button>
+          </div>
+          <div id="news-feed-container"></div>
+        </section>
+
+        <!-- 8. Company News Timeline -->
+        <section id="view-timeline" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">News-to-Market Reaction Timeline</h2>
+              <p class="page-description">Empirical event study tracking 1D, 5D, and 20D abnormal returns post disclosure.</p>
+            </div>
+          </div>
+          <div id="event-timeline-container"></div>
+        </section>
+
+        <!-- 9. NLP Sentiment and Event Intelligence -->
+        <section id="view-nlp" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Financial NLP & FinBERT Event Lab</h2>
+              <p class="page-description">Test financial sentiment probabilities, 16 event classes, and materiality.</p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom: 18px;">
+            <div class="card-title">Interactive Financial Headline Tester</div>
+            <div class="form-group">
+              <label class="form-label">Enter Financial Headline or Filing Text</label>
+              <textarea id="nlp-custom-input" class="form-input" style="height: 70px; resize: none;">Suzlon Energy bags 1,166 MW wind energy order from NTPC Green Energy Ltd</textarea>
+            </div>
+            <button id="btn-run-nlp" class="btn btn-primary btn-sm">Analyze Text with NLP Pipeline</button>
+          </div>
+
+          <div id="nlp-results-box" class="card" style="display: none;">
+            <div class="card-title">NLP Classification & Probability Output</div>
+            <div class="grid-2">
+              <div>
+                <p style="font-size: 13px; line-height: 1.8;">
+                  • <b>Financial Sentiment</b>: <span id="nlp-res-sentiment" class="positive">--</span><br/>
+                  • <b>Calibrated Probabilities</b>: <span id="nlp-res-probabilities">--</span><br/>
+                  • <b>Event Classification</b>: <span id="nlp-res-event" class="badge badge-purple">--</span><br/>
+                  • <b>Materiality Score</b>: <b id="nlp-res-materiality">--</b>
+                </p>
+              </div>
+              <div>
+                <b style="font-size: 12px; color: var(--text-muted);">Extracted Named Entities:</b>
+                <pre id="nlp-res-entities" style="font-size: 11px; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 4px; overflow-x: auto; color: #cbd5e1; margin-top: 6px;"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. RAG Research Assistant -->
+        <section id="view-rag" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Evidence-Grounded RAG Research Assistant</h2>
+              <p class="page-description">Ask complex research questions grounded in audited annual reports and filings.</p>
+            </div>
+            <span id="rag-chunks-indexed-badge" class="badge badge-purple">Indexed Filings</span>
+          </div>
+
+          <div class="chat-container">
+            <div id="rag-chat-messages" class="chat-messages">
+              <div class="chat-message assistant">
+                <b>Bharat Value AI Research Assistant:</b> Welcome! You can ask questions about company operational trends, 
+                risks, capital expenditures, and valuation drivers for any supported Indian stock (e.g., <i>"What are the main growth drivers for CDSL?"</i> or <i>"What did Exide report regarding its lithium-ion gigafactory?"</i>). 
+                Every answer will cite verified document excerpts with dates and reporting periods.
+              </div>
+            </div>
+            <div class="chat-input-bar">
+              <input type="text" id="rag-query-input" class="form-input" placeholder="Ask a financial research question grounded in evidence...">
+              <button id="btn-send-rag" class="btn btn-primary">Send Question</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 11. Multi-Agent Workflow -->
+        <section id="view-agents" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Controlled Multi-Agent Research Workflow</h2>
+              <p class="page-description">Orchestrates Fundamental, Valuation, News, Quality, Risk & Skeptical Reviewer agents.</p>
+            </div>
+            <button id="btn-run-agents" class="btn btn-primary btn-sm">⚡ Run Multi-Agent Research</button>
+          </div>
+
+          <div id="agents-results-container" style="display: none;">
+            <div class="card" style="margin-bottom: 18px; border-left: 4px solid var(--primary);">
+              <div class="card-title">Executive Agent Synthesis</div>
+              <div id="agents-synthesis-text" style="font-size: 13px; line-height: 1.7; color: var(--text-primary);"></div>
+            </div>
+
+            <div class="card-title" style="margin-bottom: 12px;">Specialized Agent Findings</div>
+            <div id="agents-cards-grid" class="grid-3" style="margin-bottom: 18px;"></div>
+
+            <div class="card">
+              <div class="card-title">Deterministic Orchestration Audit Trail</div>
+              <ul id="agents-audit-trail" style="padding-left: 18px; line-height: 1.8;"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 12. ML Research Lab -->
+        <section id="view-ml" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Quantitative Machine Learning Research Lab</h2>
+              <p class="page-description">Cross-sectional stock return ranking and feature importance via XGBoost.</p>
+            </div>
+            <span id="ml-spearman-badge" class="badge badge-success">Spearman Rho</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Top Predicted Forward Excess Returns (60-Day Horizon)</div>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr><th>Stock</th><th>Predicted Alpha</th><th>ROCE</th><th>P/E</th></tr>
+                  </thead>
+                  <tbody id="ml-top-ranked-body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div id="ml-feature-importance-chart" style="height: 360px;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 13. Backtesting -->
+        <section id="view-backtest" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Walk-Forward Strategy Backtesting</h2>
+              <p class="page-description">Point-in-time simulation with realistic STT, brokerage, and slippage deductions.</p>
+            </div>
+            <button id="btn-run-backtest" class="btn btn-primary btn-sm">Re-run Simulation</button>
+          </div>
+
+          <div class="grid-4" style="margin-bottom: 18px;">
+            <div class="card">
+              <div class="card-title">Strategy CAGR</div>
+              <div id="bt-cagr" class="metric-big positive">+0.0%</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Bench: <span id="bt-bench-cagr">--</span></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Sharpe Ratio</div>
+              <div id="bt-sharpe" class="metric-big">0.00x</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Risk-Free: 6.8% (G-Sec)</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Sortino Ratio</div>
+              <div id="bt-sortino" class="metric-big">0.00x</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Downside Deviation</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Max Drawdown</div>
+              <div id="bt-maxdd" class="metric-big negative">-0.0%</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Peak to Trough</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div id="backtest-chart" style="height: 400px;"></div>
+          </div>
+        </section>
+
+        <!-- 14. Risk & Governance -->
+        <section id="view-risk" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Risk & Corporate Governance Intelligence</h2>
+              <p class="page-description">Forensic red flags, promoter pledging, debt creep, and Altman Z-Score alerts.</p>
+            </div>
+            <span class="badge badge-primary">Active: <b class="active-symbol-badge">CDSL</b></span>
+          </div>
+          <div id="risk-flags-container"></div>
+        </section>
+
+        <!-- 15. Research Reports -->
+        <section id="view-reports" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Institutional Research Reports & Data Export</h2>
+              <p class="page-description">Generate comprehensive PDF reports and CSV datasets for offline research.</p>
+            </div>
+          </div>
+
+          <div class="card" style="max-width: 600px;">
+            <div class="card-title">Export Report for <span id="report-current-symbol" style="color: var(--primary);">CDSL</span></div>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6;">
+              Downloads a complete research report including executive summary, 5-year financial history, 
+              DCF assumptions, bear/base/bull scenarios, risk flags, and regulatory compliance disclaimers.
+            </p>
+            <div style="display: flex; gap: 12px;">
+              <button id="btn-download-pdf" class="btn btn-primary">📄 Download Institutional PDF Report</button>
+              <button id="btn-download-csv" class="btn btn-outline">📊 Export CSV Data</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 16. Health & Settings -->
+        <section id="view-health" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Platform Health & API Monitoring</h2>
+              <p class="page-description">Status of market data adapters, vector stores, and provider quotas.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="App.loadHealthStatus()">↻ Check Status</button>
+          </div>
+
+          <div class="grid-3" style="margin-bottom: 18px;">
+            <div class="card">
+              <div class="card-title">Database Storage</div>
+              <div id="health-db" class="metric-big" style="font-size: 18px;">SQLite Local</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Tracked Universe Stocks</div>
+              <div id="health-cached-symbols" class="metric-big">0</div>
+            </div>
+            <div class="card">
+              <div class="card-title">RAG Vector Store Chunks</div>
+              <div id="health-indexed-docs" class="metric-big">0</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Active Provider Configuration</div>
+            <pre id="health-providers-json" style="font-size: 12px; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 4px; color: #38bdf8;"></pre>
+          </div>
+        </section>
+
+        <section id="view-settings" class="view-section">
+          <div class="page-header">
+            <div>
+              <h2 class="page-title">Platform Settings</h2>
+              <p class="page-description">Configure API keys, default exchange, and risk thresholds.</p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 600px;">
+            <div class="form-group">
+              <label class="form-label">Google Gemini API Key (Optional for RAG Synthesis)</label>
+              <input type="password" id="setting-gemini-key" class="form-input" placeholder="AIzaSy...">
+              <small style="color: var(--text-muted);">Current Status: <b id="setting-gemini-status">--</b></small>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default Exchange</label>
+              <select id="setting-exchange" class="form-select">
+                <option value="NSE" selected>NSE (National Stock Exchange of India)</option>
+                <option value="BSE">BSE (Bombay Stock Exchange)</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="alert('Settings saved to session.')">Save Settings</button>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Evidence Modal -->
+  <div id="evidence-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+        <h3 id="evidence-modal-title" style="font-size: 15px; color: var(--primary);">Document Evidence</h3>
+        <button class="btn btn-outline btn-sm" onclick="App.closeEvidenceModal()">✕</button>
+      </div>
+      <div id="evidence-modal-body"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/charts.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
