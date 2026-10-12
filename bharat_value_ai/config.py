@@ -22,11 +22,20 @@ class Settings(BaseSettings):
 
     # Market Data
     market_data_provider: str = Field(default="yfinance", env="MARKET_DATA_PROVIDER")
+    secondary_data_provider: str = Field(default="yfinance", env="SECONDARY_DATA_PROVIDER")
     default_exchange: str = Field(default="NSE", env="DEFAULT_EXCHANGE")
     cache_ttl_seconds: int = Field(default=300, env="CACHE_TTL_SECONDS")
     candle_cache_days: int = Field(default=30, env="CANDLE_CACHE_DAYS")
 
-    # API Keys
+    # Zerodha Kite Connect (Official Indian Market Data)
+    kite_api_key: Optional[str] = Field(default=None, env="KITE_API_KEY")
+    kite_api_secret: Optional[str] = Field(default=None, env="KITE_API_SECRET")
+    kite_access_token: Optional[str] = Field(default=None, env="KITE_ACCESS_TOKEN")
+    kite_base_url: str = Field(default="https://api.kite.trade", env="KITE_BASE_URL")
+    kite_ws_url: str = Field(default="wss://ws.kite.trade", env="KITE_WS_URL")
+
+    # API Keys & Security
+    admin_api_token: str = Field(default="bharat_admin_secret_token_2026", env="ADMIN_API_TOKEN")
     gemini_api_key: Optional[str] = Field(default=None, env="GEMINI_API_KEY")
     news_api_key: Optional[str] = Field(default=None, env="NEWS_API_KEY")
     alphavantage_api_key: Optional[str] = Field(default=None, env="ALPHAVANTAGE_API_KEY")

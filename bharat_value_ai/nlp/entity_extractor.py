@@ -16,9 +16,9 @@ class FinancialEntityExtractor:
             "counterparties": []
         }
 
-        # 1. Monetary figures (e.g. ₹1,200 crore, $50 million, Rs 850 cr)
+        # 1. Monetary figures (e.g. ₹1,200 crore, $50 million, Rs 850 cr, 16,512 crore, 23.8 lakh crore, USD 450M)
         money_matches = re.findall(
-            r"(?:₹|rs\.?|inr|\$)\s*[\d,]+(?:\.\d+)?\s*(?:crore|cr|lakh|mn|billion|million)?",
+            r"(?:(?:₹|rs\.?|inr|\$|usd|eur)\s*[\d,]+(?:\.\d+)?(?:\s*(?:lakh\s+crore|crore|cr|lakh|mn|billion|million|trillion|b|m))?|[\d,]+(?:\.\d+)?\s*(?:lakh\s+crore|crore|cr|lakh|million|billion|trillion)\b)",
             text,
             flags=re.IGNORECASE
         )
@@ -38,9 +38,13 @@ class FinancialEntityExtractor:
         exec_matches = re.findall(r"(?:ceo|md|cfo|chairman|director)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)", text)
         entities["executives"] = [e.strip() for e in exec_matches[:3]]
 
-        # 5. Counterparties (partners, clients)
-        counter_matches = re.findall(r"(?:partnership with|order from|agreement with|supplies to)\s+([A-Z][a-zA-Z0-9\s&]+?)(?:\.|,|\s+for|\s+to)", text)
-        entities["counterparties"] = [c.strip() for c in counter_matches[:3]]
+        # 5. Counterparties (partners, clients, order sponsors)
+        counter_matches = re.findall(
+            r"(?:partnership with|partnered with|partners with|order from|order of|agreement with|supplies to|supply to|deal with|inks deal with|contract with|contract from|mou with|tie-up with|joint venture with)\s+([A-Z][a-zA-Z0-9\s&]+?)(?:\.|,|\s+for|\s+to|\s+worth|\s+on|\s+in|$)",
+            text,
+            flags=re.IGNORECASE
+        )
+        entities["counterparties"] = [c.strip() for c in counter_matches[:4] if len(c.strip()) > 2]
 
         return entities
 

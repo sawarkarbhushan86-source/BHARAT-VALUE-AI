@@ -19,3 +19,11 @@ def test_generate_csv_report():
         assert "Metric,Value,Unit / Notes" in content
         assert "CDSL" in content
         assert "DCF Fair Value" in content
+
+def test_generate_banking_pdf_report_null_safe():
+    """Verify that BFSI stocks with null debt-to-equity and interest coverage generate PDF without TypeError."""
+    for symbol in ["HDFCBANK", "ICICIBANK"]:
+        pdf_path = report_generator.generate_pdf_report(symbol)
+        assert os.path.exists(pdf_path)
+        assert pdf_path.endswith(".pdf")
+        assert os.path.getsize(pdf_path) > 2000

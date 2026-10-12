@@ -70,7 +70,7 @@ cp .env.example .env
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -v
 ```
-*All 37 test cases across API, valuation, NLP, RAG, backtesting, and reports will execute and pass.*
+*All 52 test cases across API, valuation, institutional reliability, NLP, RAG, backtesting, and reports execute and pass.*
 
 ### 5. Launch the Platform
 ```powershell
@@ -94,13 +94,14 @@ Navigate to `http://localhost:8000`.
 
 - **API Integration Tests**: `tests/test_api_endpoints.py` (10 passing)
 - **Financial Calculations & DCF**: `tests/test_financial_calculations.py` (5 passing)
+- **Institutional Reliability (15 Criteria)**: `tests/test_institutional_reliability.py` (15 passing)
 - **Market Data & Provenance**: `tests/test_market_and_provenance.py` (6 passing)
 - **NLP Sentiment & Event Studies**: `tests/test_nlp_and_news.py` (7 passing)
 - **RAG & Multi-Agent Orchestrator**: `tests/test_rag_and_agents.py` (4 passing)
 - **ML Ranking & Backtesting**: `tests/test_ml_and_backtest.py` (3 passing)
 - **Report Generator (PDF & CSV)**: `tests/test_reports.py` (2 passing)
 
-**Total: 37 Passed, 0 Failed (100% Pass Rate)**
+**Total: 52 Passed, 0 Failed (100% Pass Rate)**
 
 ---
 

@@ -46,3 +46,95 @@ def test_market_provider_quote():
     assert quote["price"] > 0
     assert quote["exchange"] == "NSE"
     assert "data_source" in quote
+
+def test_symbol_mapping_and_normalization():
+    """Verify symbol normalization handles .NS, .BO, exchange prefixes, and alias lookups."""
+    from bharat_value_ai.data.normalization import normalize_symbol
+    from bharat_value_ai.data.registry import company_registry
+
+    assert normalize_symbol("ICICIBANK.NS") == "ICICIBANK"
+    assert normalize_symbol("cdsl.bo") == "CDSL"
+    assert normalize_symbol("NSE:RELIANCE") == "RELIANCE"
+    assert normalize_symbol("  HDFCBANK.NS  ") == "HDFCBANK"
+
+    # Alias lookups via master registry
+    comp_icici = company_registry.get_company("icici bank")
+    assert comp_icici is not None
+    assert comp_icici["symbol"] == "ICICIBANK"
+
+    comp_hdfc = company_registry.get_company("hdfc")
+    assert comp_hdfc is not None
+    assert comp_hdfc["symbol"] == "HDFCBANK"
+
+def test_market_indices_all_four_benchmarks_including_smallcap_100():
+    """Verify all 4 benchmark indices are present and Nifty Smallcap 100 refreshes."""
+    from bharat_value_ai.services.market_data_service import market_data_service
+    indices = market_data_service.get_market_indices(force_refresh=True)
+
+    assert len(indices) == 4
+    names = [idx["name"] for idx in indices]
+    assert "NIFTY 50" in names
+    assert "NIFTY SMALLCAP 100" in names
+    assert "NIFTY BANK" in names
+    assert "INDIA VIX" in names
+
+    smallcap = next(idx for idx in indices if idx["name"] == "NIFTY SMALLCAP 100")
+    assert smallcap["price"] > 0
+    assert "data_source" in smallcap
+    assert "status" in smallcap
+
+def test_icicibank_canonical_quote_parity():
+    """Verify ICICI Bank prices are identical across quote, snapshot, and fair-value."""
+    from bharat_value_ai.services.market_data_service import market_data_service
+    from bharat_value_ai.services.snapshot_service import SnapshotService
+    from bharat_value_ai.analysis.fair_value import fair_value_engine
+
+    q = market_data_service.get_quote("ICICIBANK")
+    val = fair_value_engine.evaluate_valuation("ICICIBANK")
+    snap = SnapshotService.get_snapshot("ICICIBANK")
+
+    assert q["price"] > 0
+    assert q["price"] == val.current_price
+    assert q["price"] == snap.current_price
+    assert snap.quote["price"] == q["price"]
+
+def test_provider_failure_retains_last_valid_observation():
+    """Verify provider failure retains genuine observation with STALE / LAST AVAILABLE status, never zero."""
+    from bharat_value_ai.services.market_data_service import CentralMarketDataService
+    from bharat_value_ai.data.providers.base import BaseMarketDataProvider
+    from bharat_value_ai.data.normalization import QuoteStatus
+
+    class FailingProvider(BaseMarketDataProvider):
+        @property
+        def provider_name(self):
+            return "failing_mock"
+        def get_supported_symbols(self):
+            return ["CDSL"]
+        def get_quote(self, symbol):
+            raise ConnectionError("Upstream timeout")
+        def get_historical_ohlcv(self, symbol, period="3mo", interval="1d"):
+            return []
+        def get_market_indices(self):
+            return []
+
+    from bharat_value_ai.data.cache import market_cache
+    market_cache.invalidate("CDSL")
+    failing_service = CentralMarketDataService(primary_provider=FailingProvider())
+    quote = failing_service.get_quote("CDSL")
+
+
+    assert quote["price"] > 0
+    assert quote["status"] in [QuoteStatus.LAST_AVAILABLE.value, QuoteStatus.STALE.value]
+    assert quote.get("is_stale") is True or quote.get("is_delayed") is True
+
+def test_provider_health_diagnostics():
+    """Verify market provider health reporting exposes latency, provider name, and session."""
+    from bharat_value_ai.data.market_provider import market_provider
+    health = market_provider.get_provider_health()
+
+    assert "status" in health
+    assert "provider" in health
+    assert "session" in health
+    assert "cache" in health
+    assert "checked_at_ist" in health
+

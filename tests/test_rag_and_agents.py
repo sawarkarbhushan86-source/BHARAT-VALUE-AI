@@ -35,6 +35,18 @@ def test_rag_assistant_insufficient_evidence():
     assert "Insufficient verifiable evidence" in response.answer
     assert len(response.citations) == 0
 
+def test_rag_assistant_cross_company_mention_priority():
+    """Verify that an explicit company mention in query overrides default symbol parameter."""
+    doc_parser_service.seed_initial_knowledge_base()
+    # Query mentions Suzlon and NTPC, but ambient symbol passed is CDSL
+    response = research_assistant.answer_query(
+        query="What order did Suzlon get from NTPC?",
+        symbol="CDSL"
+    )
+    assert response.has_sufficient_evidence is True
+    assert any("Suzlon" in c.document_title for c in response.citations)
+    assert "Suzlon" in response.answer
+
 def test_multi_agent_orchestration():
     res = agent_orchestrator.run_research("CDSL")
     assert res.symbol == "CDSL"

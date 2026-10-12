@@ -32,4 +32,5 @@ def get_db():
 
 def init_db():
     """Initialize database tables."""
+    import bharat_value_ai.core.models  # noqa: F401 - Register all models with Base.metadata
     Base.metadata.create_all(bind=engine)

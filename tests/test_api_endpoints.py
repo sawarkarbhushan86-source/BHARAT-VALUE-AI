@@ -22,6 +22,23 @@ def test_api_get_quote():
     data = response.json()
     assert data["symbol"] == "CDSL"
     assert data["price"] > 0
+    assert "status" in data
+    assert data["status"] in ["LIVE", "DELAYED", "LAST AVAILABLE", "DEMO", "UNAVAILABLE"]
+    assert "data_source" in data
+
+def test_api_research_summary_compatibility():
+    response = client.get("/api/research/summary/CDSL")
+    assert response.status_code == 200
+    data = response.json()
+    # Check both canonical and backward/forward compatibility keys
+    assert "assessment" in data
+    assert "assessment_label" in data
+    assert "headline" in data
+    assert "valuation_assessment" in data
+    assert "business_quality" in data
+    assert "metric_educational_drawers" in data
+    assert "educational_drawers" in data
+    assert len(data["educational_drawers"]) >= 4
 
 def test_api_screener():
     response = client.get("/api/screener?min_roce=15&max_pe=100")
@@ -75,3 +92,37 @@ def test_api_health():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "HEALTHY"
+
+def test_api_instruments_canonical_catalog():
+    response = client.get("/api/instruments")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_instruments"] >= 50
+    assert len(data["instruments"]) >= 50
+    symbols = [i["symbol"] for i in data["instruments"]]
+    assert "RELIANCE" in symbols
+    assert "TCS" in symbols
+
+def test_api_quote_resolves_reliance_industries_name():
+    response = client.get("/api/market/quote/Reliance Industries")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["symbol"] == "RELIANCE"
+    assert data["price"] > 0
+    assert data["status"] in ["LIVE", "DELAYED", "LAST AVAILABLE"]
+
+def test_api_historical_ingestion_status():
+    response = client.get("/api/market/ingest/status")
+    assert response.status_code == 200
+    data = response.json()
+    assert "total_candles_stored" in data
+    assert "distinct_symbols_with_history" in data
+
+def test_api_ml_models_registry():
+    response = client.get("/api/ml/models")
+    assert response.status_code == 200
+    data = response.json()
+    assert "active_model" in data
+    assert "models" in data
+    assert len(data["models"]) >= 2
+

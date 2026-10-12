@@ -456,16 +456,182 @@ BENCHMARK_LEADERS: List[Dict[str, Any]] = [
         "market_cap_category": "Largecap",
         "market_cap_cr": 490000.0,
         "description": "Indian multinational technology, engineering, construction, and manufacturing conglomerate."
+    },
+    {
+        "symbol": "SBIN",
+        "name": "State Bank of India",
+        "bse_code": "500112",
+        "isin": "INE062A01020",
+        "sector": "Financial Services",
+        "industry": "Public Sector Bank",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 745000.0,
+        "description": "India's largest public sector bank commanding a quarter of total Indian commercial banking deposits."
+    },
+    {
+        "symbol": "INFY",
+        "name": "Infosys Limited",
+        "bse_code": "500209",
+        "isin": "INE009A01021",
+        "sector": "Information Technology",
+        "industry": "IT Services & Consulting",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 680000.0,
+        "description": "Global leader in next-generation digital services, enterprise cloud consulting, and generative AI platforms."
+    },
+    {
+        "symbol": "TATAMOTORS",
+        "name": "Tata Motors Limited",
+        "bse_code": "500570",
+        "isin": "INE155A01022",
+        "sector": "Automobile and Auto Components",
+        "industry": "Automobiles",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 360000.0,
+        "description": "Leading global automobile manufacturer of passenger vehicles, electric cars, and commercial trucks."
+    },
+    {
+        "symbol": "BHARTIARTL",
+        "name": "Bharti Airtel Limited",
+        "bse_code": "532454",
+        "isin": "INE397D01024",
+        "sector": "Telecommunication",
+        "industry": "Telecom - Services",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 820000.0,
+        "description": "Leading global telecommunications company with operations across 17 countries in South Asia and Africa."
+    },
+    {
+        "symbol": "ITC",
+        "name": "ITC Limited",
+        "bse_code": "500875",
+        "isin": "INE154A01025",
+        "sector": "Fast Moving Consumer Goods",
+        "industry": "Diversified FMCG",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 580000.0,
+        "description": "Diversified conglomerate spanning branded packaged foods, agri-business, paperboards, packaging, and luxury hospitality."
+    },
+    {
+        "symbol": "HINDUNILVR",
+        "name": "Hindustan Unilever Limited",
+        "bse_code": "500696",
+        "isin": "INE030A01027",
+        "sector": "Fast Moving Consumer Goods",
+        "industry": "Personal Care & Homecare",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 590000.0,
+        "description": "India's largest consumer goods company touching 9 out of 10 Indian households across food, home and personal hygiene."
+    },
+    {
+        "symbol": "KOTAKBANK",
+        "name": "Kotak Mahindra Bank Limited",
+        "bse_code": "500247",
+        "isin": "INE237A01028",
+        "sector": "Financial Services",
+        "industry": "Private Sector Bank",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 350000.0,
+        "description": "Leading Indian private banking and financial group offering commercial, investment, and wealth management services."
+    },
+    {
+        "symbol": "AXISBANK",
+        "name": "Axis Bank Limited",
+        "bse_code": "532215",
+        "isin": "INE238A01034",
+        "sector": "Financial Services",
+        "industry": "Private Sector Bank",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 360000.0,
+        "description": "Third largest private sector bank in India offering full spectrum of retail, corporate, and international financial products."
+    },
+    {
+        "symbol": "BAJFINANCE",
+        "name": "Bajaj Finance Limited",
+        "bse_code": "500034",
+        "isin": "INE296A01024",
+        "sector": "Financial Services",
+        "industry": "Non Banking Financial Company (NBFC)",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 440000.0,
+        "description": "India's largest non-banking financial lender specializing in consumer durables, digital lending, mortgages, and wealth."
+    },
+    {
+        "symbol": "ASIANPAINT",
+        "name": "Asian Paints Limited",
+        "bse_code": "500820",
+        "isin": "INE021A01026",
+        "sector": "Consumer Durables",
+        "industry": "Paints & Home Decor",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 280000.0,
+        "description": "India's largest paints and home decor corporation ranked among the top 10 decorative coatings manufacturers globally."
+    },
+    {
+        "symbol": "MARUTI",
+        "name": "Maruti Suzuki India Limited",
+        "bse_code": "532500",
+        "isin": "INE585B01010",
+        "sector": "Automobile and Auto Components",
+        "industry": "Automobiles",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 380000.0,
+        "description": "Market leader in the Indian passenger car industry commanding approximately 42% market share."
+    },
+    {
+        "symbol": "SUNPHARMA",
+        "name": "Sun Pharmaceutical Industries Limited",
+        "bse_code": "524715",
+        "isin": "INE044A01036",
+        "sector": "Healthcare",
+        "industry": "Pharmaceuticals",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 420000.0,
+        "description": "India's largest specialty generic pharmaceutical company selling medicines in over 100 countries globally."
+    },
+    {
+        "symbol": "TITAN",
+        "name": "Titan Company Limited",
+        "bse_code": "500114",
+        "isin": "INE280A01028",
+        "sector": "Consumer Discretionary",
+        "industry": "Jewellery & Lifestyle",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 310000.0,
+        "description": "Tata Group lifestyle enterprise dominating Indian branded jewellery (Tanishq), luxury watches, and eyewear."
+    },
+    {
+        "symbol": "NIFTYBEES",
+        "name": "Nippon India ETF Nifty 50 BeES",
+        "bse_code": "590103",
+        "isin": "INF204KB14I2",
+        "sector": "Indices & ETFs",
+        "industry": "Exchange Traded Fund",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 32000.0,
+        "description": "India's largest and most liquid exchange traded fund tracking the Nifty 50 benchmark index."
+    },
+    {
+        "symbol": "BANKBEES",
+        "name": "Nippon India ETF Nifty Bank BeES",
+        "bse_code": "590104",
+        "isin": "INF204KB14L6",
+        "sector": "Indices & ETFs",
+        "industry": "Exchange Traded Fund",
+        "market_cap_category": "Largecap",
+        "market_cap_cr": 18000.0,
+        "description": "High-liquidity banking sector exchange traded fund tracking the 12 most liquid Indian banking stocks."
     }
 ]
 
 def get_complete_universe() -> List[Dict[str, Any]]:
-    """Return all companies across Smallcap 100 universe and benchmark constituents."""
+    """Return all companies across Smallcap 100 universe, benchmark leaders, and liquid ETFs."""
     return NIFTY_SMALLCAP_100_CONSTITUENTS + BENCHMARK_LEADERS
 
 def find_company_by_symbol(symbol: str) -> Dict[str, Any]:
-    """Lookup company metadata by ticker symbol."""
-    sym = symbol.upper().replace(".NS", "").replace(".BO", "")
+    """Lookup company metadata by ticker symbol or canonical company name."""
+    from bharat_value_ai.data.canonical_resolver import resolve_canonical_symbol
+    sym = resolve_canonical_symbol(symbol)
     for comp in get_complete_universe():
         if comp["symbol"] == sym:
             return comp

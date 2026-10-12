@@ -303,3 +303,20 @@ class ProviderHealthRecord(Base):
     latency_ms = Column(Float, default=0.0)
     last_check = Column(DateTime, default=datetime.datetime.utcnow)
     error_message = Column(Text, nullable=True)
+
+
+class HistoricalIngestionJob(Base):
+    __tablename__ = "historical_ingestion_jobs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    job_id = Column(String(64), unique=True, index=True, nullable=False)
+    data_type = Column(String(50), default="candles") # candles, fundamentals, corporate_actions
+    symbols_json = Column(JSON, nullable=True)
+    status = Column(String(20), default="COMPLETED") # PENDING, IN_PROGRESS, COMPLETED, FAILED
+    records_ingested = Column(Integer, default=0)
+    failed_symbols_json = Column(JSON, nullable=True)
+    start_time = Column(DateTime, default=datetime.datetime.utcnow)
+    end_time = Column(DateTime, nullable=True)
+    provider = Column(String(50), default="yfinance")
+    error_message = Column(Text, nullable=True)
+

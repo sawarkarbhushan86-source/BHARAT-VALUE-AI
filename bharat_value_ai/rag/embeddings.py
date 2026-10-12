@@ -39,15 +39,17 @@ class EmbeddingService:
         return self._deterministic_dense_vector(text)
 
     def _deterministic_dense_vector(self, text: str) -> List[float]:
-        """Fast, robust, deterministic hash-projection embedding."""
+        """Fast, robust, 100% deterministic hash-projection embedding across Python processes."""
+        import hashlib
         vector = [0.0] * self.DIMENSION
         tokens = re.findall(r"\b\w+\b", text.lower())
         if not tokens:
             return vector
 
         for token in tokens:
-            h = hash(token)
-            idx = abs(h) % self.DIMENSION
+            digest = hashlib.md5(token.encode("utf-8")).digest()
+            h = int.from_bytes(digest[:4], "big")
+            idx = h % self.DIMENSION
             sign = 1.0 if (h >> 3) & 1 else -1.0
             vector[idx] += sign
 

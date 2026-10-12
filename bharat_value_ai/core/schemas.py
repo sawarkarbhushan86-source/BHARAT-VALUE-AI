@@ -35,8 +35,12 @@ class QuoteResponse(BaseSchema):
     week_52_low: Optional[float] = None
     data_source: str = "yfinance"
     is_delayed: bool = True
+    status: str = "DELAYED"
+    quote_type: Optional[str] = None
     quote_timestamp: datetime
     retrieval_timestamp: datetime
+    retrieval_ist: Optional[str] = None
+    note: Optional[str] = None
 
 class CandleResponse(BaseSchema):
     symbol: str
@@ -109,10 +113,13 @@ class ValuationResult(BaseSchema):
     base_case_value: float
     bull_case_value: float
     valuation_status: str # "UNDERVALUED", "FAIRLY_VALUED", "OVERVALUED"
-    assumptions: Dict[str, Any]
-    sensitivity_matrix: List[List[float]]
-    sensitivity_wacc_labels: List[float]
-    sensitivity_growth_labels: List[float]
+    model_type: str = "INDUSTRIAL_DCF" # "INDUSTRIAL_DCF" or "BANK_RESIDUAL_INCOME_PB"
+    justified_pb_fair_value: Optional[float] = None
+    residual_income_fair_value: Optional[float] = None
+    assumptions: Dict[str, Any] = {}
+    sensitivity_matrix: List[List[float]] = []
+    sensitivity_wacc_labels: List[float] = []
+    sensitivity_growth_labels: List[float] = []
 
 # ----------------- Business Quality & Growth -----------------
 class QualityScoreResponse(BaseSchema):
@@ -126,6 +133,8 @@ class QualityScoreResponse(BaseSchema):
     multibagger_potential_tier: str # "High Conviction", "Selective Growth", "Average", "Speculative", "High Risk"
     factor_breakdown: Dict[str, Any]
     limitations: List[str]
+    pillars: Optional[List[Dict[str, Any]]] = None
+    probability_disclaimer: Optional[str] = None
 
 # ----------------- News & NLP -----------------
 class NewsArticleResponse(BaseSchema):
@@ -157,6 +166,17 @@ class EventStudyResponse(BaseSchema):
     benchmark_1d_pct: Optional[float] = None
     abnormal_return_1d_pct: Optional[float] = None
     volume_shock_ratio: Optional[float] = None
+    publication_time: Optional[datetime] = None
+    retrieval_timestamp: Optional[datetime] = None
+    source: Optional[str] = "Exchange Regulatory Disclosure"
+    reaction_window_status: Optional[str] = "COMPLETED" # COMPLETED, PARTIAL, AWAITING_PRICES
+    market_adjusted_return_1d_pct: Optional[float] = None
+    benchmark_adjusted_return_1d_pct: Optional[float] = None
+    sample_size_days: Optional[int] = 20
+    missing_observations_count: Optional[int] = 0
+    is_causal_claim: bool = False
+    methodology_note: Optional[str] = "Statistical observation of price association. Does not constitute verified causal impact."
+    causality_disclaimer: Optional[str] = "Statistical observation of price association. Does not constitute verified causal impact."
 
 # ----------------- RAG & Evidence -----------------
 class Citation(BaseSchema):
@@ -176,8 +196,10 @@ class RAGQueryRequest(BaseModel):
 
 class RAGQueryResponse(BaseSchema):
     query: str
+    symbol: Optional[str] = None
     answer: str
     has_sufficient_evidence: bool
+    is_insufficient_evidence: bool = False
     citations: List[Citation]
     contradicting_evidence: Optional[List[str]] = None
     missing_information: Optional[List[str]] = None
@@ -196,6 +218,25 @@ class RiskFlagResponse(BaseSchema):
     evidence_source: Optional[str] = None
     confidence: float
     date_identified: datetime
+
+class RiskDimensionItem(BaseSchema):
+    dimension_id: str
+    dimension_name: str
+    status: str # "No issue detected", "Issue detected", "Not checked", "Insufficient data"
+    severity: str # "NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"
+    evidence: str
+    source_date: str
+    explanation: str
+    recommended_investigation: str
+    findings: List[str] = []
+
+class RiskMatrixResponse(BaseSchema):
+    symbol: str
+    overall_risk_rating: str # "LOW", "MODERATE", "ELEVATED", "HIGH"
+    issues_detected_count: int
+    insufficient_data_count: int
+    dimensions: List[RiskDimensionItem]
+    methodology_disclaimer: str
 
 # ----------------- Backtest & ML -----------------
 class BacktestRequest(BaseModel):
@@ -233,6 +274,15 @@ class MLRankingResponse(BaseSchema):
     bottom_ranked: List[Dict[str, Any]]
     spearman_rank_correlation: float
     feature_importance: Dict[str, float]
+    benchmark_name: str = "NIFTY SMALLCAP 100"
+    train_test_split_info: str = "Strict Chronological Split: Train (2022Q2-2023Q2), Val (2023Q3), Test (2023Q4-2024Q1)"
+    methodology: str = "Gradient Boosted Trees (XGBoost) with point-in-time fundamental factors"
+    disclaimer: str = "Predicted excess returns are quantitative model estimates, not guaranteed outcomes or investment advice."
+    baseline_comparison: Optional[Dict[str, Any]] = None
+    top_k_performance: Optional[Dict[str, Any]] = None
+    coverage_diagnostics: Optional[Dict[str, Any]] = None
+    feature_version: Optional[str] = "PIT-Factors-v2.1"
+    last_training_timestamp: Optional[str] = None
 
 # ----------------- Multi-Agent Research -----------------
 class MultiAgentResearchRequest(BaseModel):
@@ -268,3 +318,30 @@ class HealthStatus(BaseSchema):
     cached_symbols: int
     news_articles_indexed: int
     documents_indexed: int
+    diagnostics: Optional[List[Dict[str, Any]]] = None
+
+# ----------------- Universe & Coverage -----------------
+class SecurityCoverageResponse(BaseSchema):
+    symbol: str
+    name: str
+    status: str
+    eligibility: str
+    quote_coverage: Dict[str, Any]
+    historical_price_coverage: Dict[str, Any]
+    fundamental_coverage: Dict[str, Any]
+    news_coverage: Dict[str, Any]
+    last_verified_at: str
+    exclusion_reason: Optional[str] = None
+
+class UniverseCoverageSummaryResponse(BaseSchema):
+    security_master_version: str
+    last_refresh_ist: str
+    total_registered_securities: int
+    total_eligible_active: int
+    total_fully_covered: int
+    total_awaiting_data: int
+    total_excluded_or_inactive: int
+    coverage_percentage: float
+    market_cap_breakdown: Dict[str, int]
+    sample_reports: List[Dict[str, Any]] = []
+

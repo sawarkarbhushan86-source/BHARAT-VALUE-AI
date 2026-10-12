@@ -13,6 +13,11 @@ def test_ml_stock_ranking_pipeline():
     assert "roce_pct" in res.feature_importance
     # Top ranked stock score should exceed bottom ranked stock score
     assert res.top_ranked[0]["rank_score"] >= res.bottom_ranked[-1]["rank_score"]
+    # Check out-of-sample uncertainty estimation
+    top_stock = res.top_ranked[0]
+    assert "uncertainty_band_pct" in top_stock
+    assert "predicted_return_range" in top_stock
+    assert "±" in top_stock["predicted_return_range"]
 
 def test_walk_forward_backtest_with_transaction_costs():
     req = BacktestRequest(

@@ -19,8 +19,15 @@ PROMPT_INJECTION_PATTERNS = [
 ]
 
 def sanitize_symbol(symbol: str) -> str:
-    """Sanitize stock symbol to prevent query injection and invalid characters."""
-    clean = re.sub(r"[^A-Za-z0-9_\-\.]", "", symbol.upper().strip())
+    """Sanitize stock symbol and resolve company names/aliases to canonical exchange symbol."""
+    if not symbol:
+        return ""
+    try:
+        from bharat_value_ai.data.canonical_resolver import resolve_canonical_symbol
+        resolved = resolve_canonical_symbol(symbol)
+    except Exception:
+        resolved = symbol
+    clean = re.sub(r"[^A-Za-z0-9_\-\.]", "", resolved.upper().strip())
     return clean[:20]
 
 def validate_safe_path(base_dir: Path, target_path: str) -> Path:

@@ -70,3 +70,23 @@ def test_news_deduplication_clusters():
     assert clustered[0]["duplicate_cluster_id"] == clustered[1]["duplicate_cluster_id"]
     # Third article belongs to distinct cluster
     assert clustered[0]["duplicate_cluster_id"] != clustered[2]["duplicate_cluster_id"]
+
+def test_entity_extraction_crore_magnitudes():
+    """Verify that entity extractor captures monetary values expressed as crore / lakh crore without rupee symbol."""
+    text = "Tata Motors reports total capital outlay of 16,512 crore while market cap touched 23.8 lakh crore."
+    ents = entity_extractor.extract(text)
+    assert any("16,512 crore" in m for m in ents["monetary_values"])
+    assert any("23.8 lakh crore" in m for m in ents["monetary_values"])
+
+def test_news_feed_freshness_and_sorting():
+    """Verify that news provider returns articles sorted descending and filters out ancient 2016 articles."""
+    from bharat_value_ai.data.news_provider import news_service
+    articles = news_service.fetch_latest_news()
+    assert len(articles) > 0
+    # Ensure no 2016 articles
+    for a in articles:
+        assert a["published_at"].year >= 2024
+        assert a["published_at"].year != 2016
+    # Verify descending sort order
+    pub_dates = [a["published_at"] for a in articles]
+    assert pub_dates == sorted(pub_dates, reverse=True)

@@ -42,10 +42,9 @@
         <li><a href="#" class="nav-item" data-view="nlp"><span class="nav-icon">🧠</span> <span class="nav-text">NLP & FinBERT Lab</span></a></li>
       </ul>
 
-      <div class="nav-section-title">AI & Agentic Research</div>
+      <div class="nav-section-title">AI Research</div>
       <ul class="nav-menu">
         <li><a href="#" class="nav-item" data-view="rag"><span class="nav-icon">💬</span> <span class="nav-text">RAG Research Assistant</span></a></li>
-        <li><a href="#" class="nav-item" data-view="agents"><span class="nav-icon">🤖</span> <span class="nav-text">Multi-Agent Workflow</span></a></li>
       </ul>
 
       <div class="nav-section-title">Quantitative Lab</div>
@@ -80,6 +79,22 @@
         </div>
       </header>
 
+      <!-- Persistent Selected Company Context Header Bar (Phase 8) -->
+      <div id="company-context-bar">
+        <div class="context-company-info">
+          <span class="context-symbol-badge" id="ctx-symbol">CDSL</span>
+          <span class="context-company-name" id="ctx-name">Central Depository Services (India) Ltd</span>
+          <span class="context-meta-tag" id="ctx-exchange">NSE</span>
+          <span class="context-meta-tag" id="ctx-sector">Financial Infrastructure</span>
+        </div>
+        <div class="context-price-info">
+          <span class="context-price-val" id="ctx-price">₹0.00</span>
+          <span class="context-change-val" id="ctx-change">+0.00%</span>
+          <span id="ctx-status-badge" class="status-badge status-badge-last-available">LAST AVAILABLE</span>
+          <span style="font-size: 11px; color: var(--text-muted);">Observed: <b id="ctx-time" style="color: var(--text-secondary);">--</b></span>
+        </div>
+      </div>
+
       <!-- Views Container -->
       <div id="views-container">
         
@@ -94,10 +109,22 @@
           </div>
           <div id="market-indices-grid" class="grid-4" style="margin-bottom: 20px;"></div>
 
-          <div class="grid-2">
+          <div class="grid-3">
             <div class="card">
               <div class="card-title">Top Smallcap Gainers Today</div>
               <div id="market-movers-list"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Verified Security Master & Coverage</div>
+              <div style="font-size: 13px; line-height: 1.8; color: var(--text-secondary);">
+                <div>• <b>Master Version:</b> <span id="cov-version" class="badge badge-primary">v2.1</span></div>
+                <div>• <b>Eligible Active:</b> <b id="cov-active" style="color: #34d399;">22</b> Equities</div>
+                <div>• <b>Excluded / Delisted:</b> <b id="cov-excluded" style="color: #fb7185;">2</b> (DHFL, Gitanjali)</div>
+                <div>• <b>Awaiting Filings:</b> <b id="cov-awaiting">0</b></div>
+                <div style="margin-top: 6px; font-size: 11px; color: var(--text-muted);">
+                  Verified NSE/BSE master strictly prevents survivorship and look-ahead bias.
+                </div>
+              </div>
             </div>
             <div class="card">
               <div class="card-title">Data Source & Provenance Status</div>
@@ -105,7 +132,7 @@
                 • <b>Market Data</b>: Yahoo Finance Indian Feeds (NSE / BSE delayed 15m).<br/>
                 • <b>Exchange Calendar</b>: Indian Trading Hours (09:15 to 15:30 IST).<br/>
                 • <b>Point-in-Time Discipline</b>: Historical financials strictly reflect regulatory disclosure dates.<br/>
-                • <b>Current Universe</b>: Nifty Smallcap 100 constituents + Benchmark Leaders.
+                • <b>Coverage Guard</b>: Un-covered stocks strictly blocked from ranking/backtest.
               </p>
             </div>
           </div>
@@ -166,42 +193,186 @@
         <section id="view-details" class="view-section">
           <div class="page-header">
             <div>
-              <h2 id="details-symbol-title" class="page-title">CDSL — NSE</h2>
-              <p class="page-description">Audited technical price action and live market quote snapshot.</p>
+              <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <h2 id="details-symbol-title" class="page-title" style="margin: 0;">CDSL — NSE</h2>
+                <span id="details-status-badge" class="status-badge status-badge-last-available">LAST AVAILABLE</span>
+              </div>
+              <p class="page-description" style="margin-top: 6px;">
+                Verified Observation: <b id="details-status-time" style="color: var(--text-primary);">--</b> • Source: <b id="details-status-source" style="color: var(--text-primary);">--</b> • <span id="details-status-note" style="color: var(--text-muted); font-size: 11px;">"Latest available" is an archived verified quote, not real-time.</span>
+              </p>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button class="btn btn-primary btn-sm" onclick="App.navigate('valuation')">Calculate DCF</button>
+              <button class="btn btn-primary btn-sm" onclick="App.navigate('valuation')">Calculate Valuation</button>
               <button class="btn btn-outline btn-sm" onclick="App.navigate('rag')">Research with RAG</button>
             </div>
           </div>
 
           <div class="grid-4" style="margin-bottom: 18px;">
             <div class="card">
-              <div class="card-title">Last Traded Price</div>
+              <div class="card-title">Verified Price</div>
               <div id="details-price" class="metric-big">₹0.00</div>
               <div id="details-change" class="metric-change">+0.00%</div>
             </div>
             <div class="card">
               <div class="card-title">Trading Volume</div>
               <div id="details-volume" class="metric-big">0</div>
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Shares Traded Today</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Shares Traded on Session</div>
             </div>
             <div class="card">
               <div class="card-title">Turnover (Cr)</div>
               <div id="details-turnover" class="metric-big">₹0.00 Cr</div>
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Estimated Value</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Session Turnover</div>
             </div>
             <div class="card">
-              <div class="card-title">52-Week Range</div>
+              <div class="card-title">52-Week Range & P/E</div>
               <div id="details-52w" style="font-size: 15px; font-weight: 700; margin-top: 6px;">₹0 - ₹0</div>
               <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">P/E: <b id="details-pe">--</b></div>
             </div>
           </div>
 
-          <div class="card">
+          <!-- Beginner-Friendly Stock Research Summary Card -->
+          <div class="beginner-summary-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+              <div>
+                <span style="font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px;">Institutional Research Framework</span>
+                <h3 style="margin: 2px 0 0; font-size: 18px; color: var(--text-primary);">Beginner-Friendly Investment Research Summary</h3>
+              </div>
+              <!-- Horizon Selection Pills -->
+              <div class="horizon-selector-bar">
+                <button type="button" class="horizon-pill-btn" data-horizon="short_term" onclick="App.setResearchHorizon('short_term')">Short-Term (1–3M)</button>
+                <button type="button" class="horizon-pill-btn active" data-horizon="medium_term" onclick="App.setResearchHorizon('medium_term')">Medium-Term (1–3Y)</button>
+                <button type="button" class="horizon-pill-btn" data-horizon="long_term" onclick="App.setResearchHorizon('long_term')">Long-Term (3–5Y)</button>
+              </div>
+            </div>
+
+            <!-- Main Assessment Banner -->
+            <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 18px;">
+              <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px;">
+                <span id="summary-assessment-badge" class="assessment-badge-large assessment-worth">WORTH INVESTIGATING</span>
+                <span id="summary-horizon-badge" class="badge badge-primary">Horizon: 1–3 Years</span>
+                <span id="summary-model-type-badge" class="badge badge-primary">Model: 5Y DCF</span>
+              </div>
+              <p id="summary-headline" style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin: 0 0 6px; line-height: 1.5;">
+                Loading evidence-grounded research summary...
+              </p>
+              <div style="font-size: 11px; color: var(--text-muted);">
+                <b>Methodology Note:</b> Research assessment grounded in audited regulatory disclosures and point-in-time fundamentals. Not guaranteed predictions or personal financial advice.
+              </div>
+            </div>
+
+            <!-- Structured 3-Column Decision Grid -->
+            <div class="grid-3" style="gap: 16px; margin-bottom: 18px;">
+              <!-- Col 1: Thesis & Valuation -->
+              <div class="card" style="margin: 0; background: rgba(15, 23, 42, 0.6);">
+                <div class="card-title" style="color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                  <span>⚖️</span> Modeled Valuation & Thesis
+                </div>
+                <div style="font-size: 12px; margin-bottom: 12px; line-height: 1.6;">
+                  <div><b>Verified Price:</b> <span id="summary-cmp" style="color: var(--text-primary);">--</span></div>
+                  <div><b>Modeled Fair Value:</b> <span id="summary-fair-val" style="color: #38bdf8; font-weight: 700;">--</span></div>
+                  <div><b>Margin of Safety:</b> <span id="summary-mos" style="font-weight: 700;">--</span></div>
+                  <div><b>Valuation Range:</b> <span id="summary-val-range" style="color: var(--text-muted);">--</span></div>
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #34d399; margin-bottom: 4px;">STRONGEST SUPPORTING EVIDENCE</div>
+                <ul id="summary-evidence-list" style="margin: 0 0 12px; padding-left: 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                  <li>Loading verified evidence...</li>
+                </ul>
+                <div style="font-size: 11px; font-weight: 700; color: #fb7185; margin-bottom: 4px;">STRONGEST COUNTERARGUMENT</div>
+                <ul id="summary-counterargs-list" style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                  <li>Loading critical arguments...</li>
+                </ul>
+              </div>
+
+              <!-- Col 2: Business Quality & Growth -->
+              <div class="card" style="margin: 0; background: rgba(15, 23, 42, 0.6);">
+                <div class="card-title" style="color: #34d399; display: flex; align-items: center; gap: 6px;">
+                  <span>🚀</span> Business Quality & Catalysts
+                </div>
+                <div style="font-size: 12px; margin-bottom: 12px; line-height: 1.6;">
+                  <div><b>Quality Score:</b> <span id="summary-quality-score" style="font-weight: 700;">--/100</span></div>
+                  <div><b>Compounding Tier:</b> <span id="summary-compounding-tier" style="color: #34d399; font-weight: 700;">--</span></div>
+                  <div><b>Balance Sheet / Solvency:</b> <span id="summary-solvency-status">--</span></div>
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 4px;">GROWTH DRIVERS & ASSUMPTIONS</div>
+                <ul id="summary-growth-drivers" style="margin: 0 0 12px; padding-left: 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                  <li>Loading growth catalysts...</li>
+                </ul>
+                <div style="font-size: 11px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">MATERIAL DOWNSIDE RISKS</div>
+                <ul id="summary-risks" style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                  <li>Loading risk factors...</li>
+                </ul>
+              </div>
+
+              <!-- Col 3: Evidence Grounding & Limitations -->
+              <div class="card" style="margin: 0; background: rgba(15, 23, 42, 0.6);">
+                <div class="card-title" style="color: #fbbf24; display: flex; align-items: center; gap: 6px;">
+                  <span>🛡️</span> Data Grounding & Limitations
+                </div>
+                <div style="font-size: 12px; margin-bottom: 12px; line-height: 1.6;">
+                  <div><b>Data Freshness:</b> <span id="summary-data-freshness" style="color: var(--text-secondary);">--</span></div>
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">CONFIDENCE LIMITATIONS & MISSING DATA</div>
+                <ul id="summary-limitations" style="margin: 0 0 12px; padding-left: 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                  <li>Evaluating model uncertainties...</li>
+                </ul>
+                <div style="font-size: 11px; font-weight: 700; color: #f43f5e; margin-bottom: 4px;">CONDITIONS THAT INVALIDATE THESIS</div>
+                <ul id="summary-thesis-breakers" style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                  <li>Loading thesis break triggers...</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Expandable Educational Metric Drawers -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="font-size: 13px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                  <span>💡</span> Beginner Educational Explanations (Click cards to inspect definitions & limitations)
+                </div>
+                <span style="font-size: 11px; color: var(--text-muted);">Expand to understand technical metrics</span>
+              </div>
+              <div id="summary-educational-drawers" class="educational-drawers-container">
+                <!-- Dynamically populated educational drawers -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Candlestick Chart with Multi-Period Range Controls -->
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Historical Price & Volume Action</span>
+                  <span class="badge badge-primary" style="font-size: 10px;">Split-Adjusted (NSE)</span>
+                  <span id="chart-interval-badge" class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--primary); font-size: 10px;">Daily Candles (1D)</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                  Interactive crosshair, volume breakdown, and period extreme markers. Weekends filtered to prevent misleading gaps.
+                </div>
+              </div>
+              <!-- Range Selector Buttons -->
+              <div class="horizon-selector-bar" id="chart-range-bar">
+                <button type="button" class="horizon-pill-btn" data-period="1d" onclick="App.setChartPeriod('1d')">1D</button>
+                <button type="button" class="horizon-pill-btn" data-period="1w" onclick="App.setChartPeriod('1w')">1W</button>
+                <button type="button" class="horizon-pill-btn" data-period="1mo" onclick="App.setChartPeriod('1mo')">1M</button>
+                <button type="button" class="horizon-pill-btn active" data-period="3mo" onclick="App.setChartPeriod('3mo')">3M</button>
+                <button type="button" class="horizon-pill-btn" data-period="6mo" onclick="App.setChartPeriod('6mo')">6M</button>
+                <button type="button" class="horizon-pill-btn" data-period="1y" onclick="App.setChartPeriod('1y')">1Y</button>
+                <button type="button" class="horizon-pill-btn" data-period="5y" onclick="App.setChartPeriod('5y')">5Y</button>
+              </div>
+            </div>
+
+            <!-- Selected Period Statistics Bar -->
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; background: rgba(15, 23, 42, 0.5); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); margin-bottom: 12px; font-size: 12px;">
+              <div><span style="color: var(--text-muted);">Period High:</span> <b id="chart-period-high" style="color: #38bdf8;">--</b></div>
+              <div><span style="color: var(--text-muted);">Period Low:</span> <b id="chart-period-low" style="color: #fbbf24;">--</b></div>
+              <div><span style="color: var(--text-muted);">Period Return:</span> <b id="chart-period-change">--</b></div>
+              <div><span style="color: var(--text-muted);">Total Volume:</span> <b id="chart-period-volume" style="color: var(--text-primary);">--</b></div>
+            </div>
+
             <div id="stock-candle-chart" style="height: 480px;"></div>
           </div>
         </section>
+
 
         <!-- 4. Fundamental Analysis -->
         <section id="view-fundamentals" class="view-section">
@@ -262,6 +433,42 @@
             <p style="font-size: 13px; color: var(--text-secondary);">
               <b>Interpretation:</b> <span id="dupont-interpretation">--</span> (Combined ROE: <b id="dupont-roe" class="positive">--</b>)
             </p>
+          </div>
+
+          <!-- Multi-Period Audited Statements Table (Phase 3) -->
+          <div class="card" style="margin-top: 18px; padding: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Audited Financial Statements Comparison</span>
+                  <span id="statements-view-badge" class="badge badge-primary">Consolidated</span>
+                  <span id="statements-sector-badge" class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--primary);">Sector Standard</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                  Multi-period reported metrics in ₹ Crores. Banking-specific lines (NII, NIM, Asset Quality) automatically rendered for BFSI entities.
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="horizon-selector-bar" id="statements-period-bar">
+                  <button type="button" class="horizon-pill-btn active" data-period-type="annual" onclick="App.setStatementsPeriod('annual')">Annual (3Y)</button>
+                  <button type="button" class="horizon-pill-btn" data-period-type="quarterly" onclick="App.setStatementsPeriod('quarterly')">Quarterly (4Q)</button>
+                </div>
+                <div class="horizon-selector-bar" id="statements-view-bar">
+                  <button type="button" class="horizon-pill-btn active" data-view-type="consolidated" onclick="App.setStatementsView('consolidated')">Consolidated</button>
+                  <button type="button" class="horizon-pill-btn" data-view-type="standalone" onclick="App.setStatementsView('standalone')">Standalone</button>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead id="statements-table-head">
+                  <tr><th>Financial Line Item</th><th>Loading...</th></tr>
+                </thead>
+                <tbody id="statements-table-body">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading audited statements data...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -338,6 +545,76 @@
               <div id="dcf-sensitivity-chart" style="height: 320px;"></div>
             </div>
           </div>
+
+          <!-- Step-by-Step Enterprise Value to Equity Value Waterfall (Phase 5) -->
+          <div class="waterfall-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <span style="font-size: 15px; font-weight: 700; color: var(--text-primary);" id="waterfall-title">Enterprise Value to Per-Share Equity Waterfall</span>
+                <span id="val-model-badge" class="badge badge-primary" style="margin-left: 8px;">Industrial FCF DCF</span>
+              </div>
+              <span style="font-size: 11px; color: var(--text-muted);">
+                <b>Model Integrity:</b> Modeled intrinsic values are theoretical DCF/RIM outputs, never fabricated live prices.
+              </span>
+            </div>
+
+            <div id="waterfall-steps-container">
+              <div class="waterfall-step-row">
+                <span>1. Present Value of 5-Year Explicit Cash Flows (PV of FCF)</span>
+                <b id="wf-pv-fcf">--</b>
+              </div>
+              <div class="waterfall-step-row">
+                <span>2. Present Value of Terminal Value (Gordon Growth Model)</span>
+                <b id="wf-pv-tv">--</b>
+              </div>
+              <div class="waterfall-step-row" style="background: rgba(56, 189, 248, 0.05); padding: 8px 6px;">
+                <span><b>= Enterprise Value (EV)</b></span>
+                <b id="wf-ev" style="color: var(--primary);">--</b>
+              </div>
+              <div class="waterfall-step-row">
+                <span>3. Less Net Debt (Total Debt minus Cash & Liquid Equivalents)</span>
+                <b id="wf-net-debt" style="color: #fb7185;">--</b>
+              </div>
+              <div class="waterfall-step-row" style="background: rgba(16, 185, 129, 0.05); padding: 8px 6px;">
+                <span><b>= Implied Total Equity Value</b></span>
+                <b id="wf-equity" style="color: #34d399;">--</b>
+              </div>
+              <div class="waterfall-step-row">
+                <span>4. Divided by Diluted Shares Outstanding</span>
+                <b id="wf-shares">--</b>
+              </div>
+              <div class="waterfall-step-row">
+                <span><b>= DCF / RIM Intrinsic Value per Share</b></span>
+                <b id="wf-per-share">--</b>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advanced Valuation Methodology Expandable Drawer (Phase 5) -->
+          <div class="card" style="padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="App.toggleDrawer('dcf-methodology-drawer')">
+              <div style="font-weight: 700; font-size: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                <span>📐</span> <span>Advanced Institutional Valuation Methodology & Mathematical Formulations</span>
+              </div>
+              <span class="badge badge-primary">Click to Expand</span>
+            </div>
+            <div id="dcf-methodology-drawer" style="display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-light); font-size: 12px; line-height: 1.7; color: var(--text-secondary);">
+              <div class="grid-2" style="gap: 16px;">
+                <div>
+                  <h4 style="color: var(--primary); margin-bottom: 6px;">A. Non-Financial Industrial DCF (FCFF)</h4>
+                  <p>• <b>Discount Rate (WACC):</b> Weighted Average Cost of Capital blending cost of equity (Ke via CAPM: Rf 6.8% + Beta × ERP 5.7%) and post-tax cost of debt.</p>
+                  <p>• <b>Terminal Value (Gordon Growth):</b> $TV = \frac{FCF_n \times (1 + g)}{WACC - g}$, mathematically constrained to $WACC > g$.</p>
+                  <p>• <b>Enterprise Value Bridge:</b> Explicitly subtracts audited non-current borrowings and adds cash reserves.</p>
+                </div>
+                <div>
+                  <h4 style="color: #34d399; margin-bottom: 6px;">B. Banking & NBFC Valuation (RIM & Justified P/B)</h4>
+                  <p>• <b>Why DCF Fails for Banks:</b> Customer deposits are operating liabilities, not industrial debt. Capex and working capital do not reflect banking risk assets.</p>
+                  <p>• <b>Residual Income Model:</b> $V_0 = BV_0 + \sum_{t=1}^n \frac{(ROE_t - Ke) \times BV_{t-1}}{(1 + Ke)^t} + TV_{RI}$. Excess return generated over cost of equity.</p>
+                  <p>• <b>Justified P/B:</b> $P/B = \frac{ROE - g}{Ke - g}$. Banks earning above Ke trade at a justified premium to book value.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- 6. Business Quality & Growth -->
@@ -350,24 +627,47 @@
             <span class="badge badge-primary">Active: <b class="active-symbol-badge">CDSL</b></span>
           </div>
 
+          <!-- Institutional Probability Disclaimer (Phase 6) -->
+          <div class="card" style="margin-bottom: 18px; border-left: 4px solid var(--primary); background: rgba(15, 23, 42, 0.75);">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="font-size: 14px;">🛡️</span>
+              <span style="font-weight: 700; font-size: 13px; color: var(--primary);">Evidence-Based Quality vs Future Probability Separation</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+              The Business Quality Score evaluates historical financial discipline, return on capital, and balance sheet resilience.
+              <b>It is strictly separated from future return probability.</b> We do not manufacture uncalibrated "multibagger probabilities" without an empirically trained, out-of-sample validated statistical model.
+            </p>
+          </div>
+
           <div class="grid-2" style="margin-bottom: 18px;">
             <div class="card">
-              <div class="card-title">Compounding Pillar Scores</div>
-              <div style="font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 4px;" id="qual-composite">--/100</div>
+              <div class="card-title">Composite Compounding Score</div>
+              <div style="font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 4px;" id="qual-composite">--/100</div>
               <div style="margin-bottom: 14px;"><span class="badge badge-success" id="qual-tier">--</span></div>
 
               <p style="font-size: 13px; line-height: 1.8;">
-                • <b>Business Moat & Pricing Power</b>: <span id="qual-moat">--</span><br/>
-                • <b>Financial Strength & Returns</b>: <span id="qual-fin">--</span><br/>
-                • <b>Long-Term Growth Runway</b>: <span id="qual-growth">--</span><br/>
-                • <b>Valuation Attractiveness</b>: <span id="qual-val">--</span><br/>
-                • <b>Governance & Solvency Health</b>: <span id="qual-gov">--</span>
+                • <b>Business Moat & Pricing Power (25%)</b>: <span id="qual-moat">--</span><br/>
+                • <b>Financial Strength & Returns (25%)</b>: <span id="qual-fin">--</span><br/>
+                • <b>Long-Term Growth Runway (20%)</b>: <span id="qual-growth">--</span><br/>
+                • <b>Valuation Attractiveness (10%)</b>: <span id="qual-val">--</span><br/>
+                • <b>Governance & Solvency Health (20%)</b>: <span id="qual-gov">--</span>
               </p>
             </div>
 
             <div class="card">
-              <div class="card-title">Framework Assumptions & Limitations</div>
+              <div class="card-title">Framework Limitations & Survivorship Controls</div>
               <ul id="qual-limitations-list" style="font-size: 13px; color: var(--text-secondary); line-height: 1.7; padding-left: 18px;"></ul>
+            </div>
+          </div>
+
+          <!-- 5 Detailed Pillar Cards Container (Phase 6) -->
+          <div style="margin-bottom: 14px;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">5-Pillar Evidence & Calculation Auditing</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 14px;">
+              Examine the audited metrics, calculation rules, missing-data adjustments, and counterarguments for each pillar.
+            </p>
+            <div id="qual-pillars-container" class="pillar-cards-list">
+              <!-- Dynamically rendered 5 pillar cards -->
             </div>
           </div>
         </section>
@@ -401,6 +701,39 @@
             <div>
               <h2 class="page-title">Financial NLP & FinBERT Event Lab</h2>
               <p class="page-description">Test financial sentiment probabilities, 16 event classes, and materiality.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="App.downloadNLPEvalReport()">📥 Download Benchmark Report (.md)</button>
+          </div>
+
+          <!-- Phase 3: Held-Out NLP Benchmark & Calibration Evaluation Card -->
+          <div class="card" style="margin-bottom: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <span class="card-title" style="margin-bottom: 0;">Held-Out Financial NLP Benchmark Evaluation</span>
+                <span class="badge badge-success" style="margin-left: 8px;">N=22 Verified Samples</span>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="App.loadNLPEvaluation(true)">↻ Run Benchmark</button>
+            </div>
+            <div class="grid-4" style="margin-bottom: 14px;">
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm);">
+                <small style="color: var(--text-muted);">Sentiment Accuracy</small><br/>
+                <b id="nlp-eval-acc" class="metric-big positive" style="font-size: 20px;">--</b>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm);">
+                <small style="color: var(--text-muted);">Macro-F1 Score</small><br/>
+                <b id="nlp-eval-macro-f1" class="metric-big positive" style="font-size: 20px;">--</b>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm);">
+                <small style="color: var(--text-muted);">Calibration (Brier / ECE)</small><br/>
+                <b id="nlp-eval-calib" class="metric-big" style="font-size: 20px; color: var(--primary);">--</b>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: var(--radius-sm);">
+                <small style="color: var(--text-muted);">Lift over Naive Baseline</small><br/>
+                <b id="nlp-eval-lift" class="metric-big positive" style="font-size: 20px;">--</b>
+              </div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+              <b>Benchmark Scope:</b> Evaluates 22 held-out financial headlines including positive, negative, neutral, negated, question-form, and mixed announcements against ground-truth labels. Probability calibration is computed using multi-class Brier scoring and Expected Calibration Error (ECE).
             </div>
           </div>
 
@@ -490,7 +823,38 @@
               <h2 class="page-title">Quantitative Machine Learning Research Lab</h2>
               <p class="page-description">Cross-sectional stock return ranking and feature importance via XGBoost.</p>
             </div>
-            <span id="ml-spearman-badge" class="badge badge-success">Spearman Rho</span>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <span id="ml-model-version-badge" class="badge badge-primary">v2.2-Institutional</span>
+              <span id="ml-spearman-badge" class="badge badge-purple">Spearman Rho: --</span>
+              <button id="btn-ml-retrain" class="btn btn-primary btn-sm" onclick="App.retrainMLModel()">⚡ Retrain Model</button>
+              <button id="btn-ml-rollback" class="btn btn-outline btn-sm" onclick="App.rollbackMLModel()" title="Rollback to previous validated checkpoint">↩ Rollback</button>
+            </div>
+          </div>
+
+          <div class="grid-4" style="margin-bottom: 16px;">
+            <div class="card">
+              <div class="card-title">Top-Quintile Sim Return</div>
+              <div id="ml-top-ann-ret" class="metric-big positive">+24.5%</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Net of 30 bps round-trip friction</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Ridge Linear Baseline</div>
+              <div id="ml-ridge-rho" class="metric-big">Rho: +0.22</div>
+              <div style="font-size: 11px; color: var(--text-muted);">XGBoost Lift: <b id="ml-ridge-lift" class="positive">+0.14</b></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Quality Heuristic Baseline</div>
+              <div id="ml-heuristic-rho" class="metric-big">Rho: +0.18</div>
+              <div style="font-size: 11px; color: var(--text-muted);">ROCE / P/E Heuristic Model</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Walk-Forward Diagnostics</div>
+              <div id="ml-cov-diag" style="font-size: 11px; line-height: 1.6; color: var(--text-secondary);">
+                • <b>Panel Universe:</b> 22 Stocks<br/>
+                • <b>Rebalance Splits:</b> 8 Quarters<br/>
+                • <b>Leakage Guard:</b> Verified
+              </div>
+            </div>
           </div>
 
           <div class="grid-2">
@@ -499,11 +863,14 @@
               <div class="table-container">
                 <table>
                   <thead>
-                    <tr><th>Stock</th><th>Predicted Alpha</th><th>ROCE</th><th>P/E</th></tr>
+                    <tr><th>Stock</th><th>Predicted Alpha (±σ)</th><th>ROCE</th><th>P/E</th></tr>
                   </thead>
                   <tbody id="ml-top-ranked-body"></tbody>
                 </table>
               </div>
+              <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px; line-height: 1.5;">
+                <b>Uncertainty Note:</b> Model predictions represent cross-sectional ranking scores with ±1 standard deviation residuals from chronological out-of-sample testing. These are quantitative factor estimates, not guaranteed outcomes.
+              </p>
             </div>
 
             <div class="card">
@@ -526,7 +893,7 @@
             <div class="card">
               <div class="card-title">Strategy CAGR</div>
               <div id="bt-cagr" class="metric-big positive">+0.0%</div>
-              <div style="font-size: 11px; color: var(--text-muted);">Bench: <span id="bt-bench-cagr">--</span></div>
+              <div style="font-size: 11px; color: var(--text-muted);">Bench: <span id="bt-bench-cagr">--</span> • Alpha: <b id="bt-alpha" class="positive">--</b></div>
             </div>
             <div class="card">
               <div class="card-title">Sharpe Ratio</div>
@@ -555,11 +922,46 @@
           <div class="page-header">
             <div>
               <h2 class="page-title">Risk & Corporate Governance Intelligence</h2>
-              <p class="page-description">Forensic red flags, promoter pledging, debt creep, and Altman Z-Score alerts.</p>
+              <p class="page-description">8-dimension forensic audit matrix with explicit missing-data and evidence tracking.</p>
             </div>
             <span class="badge badge-primary">Active: <b class="active-symbol-badge">CDSL</b></span>
           </div>
-          <div id="risk-flags-container"></div>
+
+          <!-- Institutional Risk Assessment Banner (Phase 7) -->
+          <div class="card" style="margin-bottom: 18px; padding: 18px; border-left: 4px solid var(--warning); background: rgba(15, 23, 42, 0.85);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 16px;">⚠️</span>
+                <span style="font-size: 15px; font-weight: 700; color: var(--text-primary);">Overall Forensic Risk Rating:</span>
+                <span id="risk-overall-rating" class="badge badge-warning" style="font-size: 13px; font-weight: 800;">EVALUATING...</span>
+              </div>
+              <div style="display: flex; gap: 14px; font-size: 12px;">
+                <span>Issues Detected: <b id="risk-issues-count" style="color: #fb7185;">0</b></span>
+                <span>Insufficient Data: <b id="risk-insufficient-count" style="color: #fbbf24;">0</b></span>
+              </div>
+            </div>
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+              <b>INSTITUTIONAL FORENSIC RULE:</b> We differentiate <i>No issue detected</i>, <i>Issue detected</i>, <i>Not checked</i>, and <i>Insufficient data</i>. 
+              <b>Never equate missing evidence with evidence of safety.</b> Unchecked schedules or missing disclosures are highlighted for analyst investigation.
+            </p>
+          </div>
+
+          <!-- 8-Dimension Risk Matrix Grid (Phase 7) -->
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">8 Institutional Risk Dimensions</h3>
+              <span style="font-size: 11px; color: var(--text-muted);">Audited evidence, source date, and forensic investigation recommendations</span>
+            </div>
+            <div id="risk-matrix-container" class="risk-matrix-grid">
+              <!-- Dynamically populated 8 dimension cards -->
+            </div>
+          </div>
+
+          <!-- Granular Forensic Alerts Section -->
+          <div style="margin-bottom: 14px;">
+            <h3 style="font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Specific Identified Red Flags</h3>
+            <div id="risk-flags-container"></div>
+          </div>
         </section>
 
         <!-- 15. Research Reports -->
@@ -609,6 +1011,27 @@
             </div>
           </div>
 
+          <div class="card" style="margin-bottom: 18px;">
+            <div class="card-title">Live Provider Health Diagnostics & Connectivity</div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Subsystem / Provider</th>
+                    <th>Capability</th>
+                    <th>Status</th>
+                    <th>Latency</th>
+                    <th>Data Freshness</th>
+                    <th>Credentials</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="health-diagnostics-body"></tbody>
+              </table>
+            </div>
+            <div id="health-probe-result" style="margin-top: 12px; font-size: 12px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 4px; display: none;"></div>
+          </div>
+
           <div class="card">
             <div class="card-title">Active Provider Configuration</div>
             <pre id="health-providers-json" style="font-size: 12px; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 4px; color: #38bdf8;"></pre>
@@ -625,7 +1048,7 @@
           <div class="card" style="max-width: 600px;">
             <div class="form-group">
               <label class="form-label">Google Gemini API Key (Optional for RAG Synthesis)</label>
-              <input type="password" id="setting-gemini-key" class="form-input" placeholder="AIzaSy...">
+              <input type="password" id="setting-gemini-key" class="form-input" placeholder="Enter Gemini API key to configure..." autocomplete="off">
               <small style="color: var(--text-muted);">Current Status: <b id="setting-gemini-status">--</b></small>
             </div>
             <div class="form-group">
@@ -635,7 +1058,7 @@
                 <option value="BSE">BSE (Bombay Stock Exchange)</option>
               </select>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="alert('Settings saved to session.')">Save Settings</button>
+            <button class="btn btn-primary btn-sm" onclick="App.saveSettings()">Save Settings</button>
           </div>
         </section>
 

@@ -1,0 +1,141 @@
+{
+  "active_version": "v2.1-Audited",
+  "previous_version": "v2.1-Audited",
+  "models": {
+    "v2.1-Audited": {
+      "version": "v2.1-Audited",
+      "created_at_utc": "2026-10-10 12:00:00",
+      "status": "ACTIVE",
+      "model_type": "XGBoost-Ranker",
+      "spearman_rho": 0.45,
+      "top_quintile_return_pct": 28.5,
+      "target": "target_60d_excess_return",
+      "sample_size": 160,
+      "features_count": 9,
+      "train_window": "2022Q2 - 2023Q2",
+      "test_window": "2023Q4 - 2024Q1"
+    },
+    "v2.2-Institutional": {
+      "version": "v2.2-Institutional",
+      "created_at_utc": "2026-10-12 15:00:00",
+      "status": "ARCHIVED",
+      "model_type": "XGBoost-Ranker-MultiFactor",
+      "spearman_rho": 0.485,
+      "top_quintile_return_pct": 31.2,
+      "target": "target_60d_excess_return",
+      "sample_size": 320,
+      "features_count": 12,
+      "train_window": "2021Q1 - 2023Q2",
+      "test_window": "2023Q3 - 2024Q2"
+    },
+    "BharatValue-XGBoost-Ranker-v2.2": {
+      "version": "BharatValue-XGBoost-Ranker-v2.2",
+      "created_at_utc": "2026-10-12 13:36:15",
+      "status": "REJECTED_GATE_FAILURE",
+      "model_type": "XGBoost-Ranker-MultiFactor",
+      "spearman_rho": 0.759,
+      "top_quintile_return_pct": 142.49,
+      "target": "target_60d_excess_return",
+      "sample_size": 32,
+      "features_count": 12,
+      "features": [
+        "roe_pct",
+        "roce_pct",
+        "operating_margin_pct",
+        "revenue_growth_3y_cagr",
+        "profit_growth_3y_cagr",
+        "debt_to_equity",
+        "pe_ratio",
+        "altman_z_score",
+        "cash_conversion_cycle",
+        "momentum_60d_pct",
+        "volatility_20d_pct",
+        "sma_trend_ratio"
+      ],
+      "train_window": "2022Q2 - 2023Q2",
+      "test_window": "2023Q4 - 2024Q1",
+      "metrics": {
+        "xgboost_spearman_rho": 0.759,
+        "ridge_linear_spearman_rho": 0.87,
+        "heuristic_quality_spearman_rho": 0.585,
+        "rank_correlation_lift_over_linear": -0.111,
+        "rank_correlation_lift_over_heuristic": 0.173
+      },
+      "gate_passed": false,
+      "gate_rejection_reasons": [
+        "Evaluation sample size (32) below minimum statistical confidence requirement (40)."
+      ]
+    },
+    "v_small_test": {
+      "version": "v_small_test",
+      "created_at_utc": "2026-10-12 13:28:39",
+      "status": "REJECTED_GATE_FAILURE",
+      "model_type": "XGBoost-Ranker-MultiFactor",
+      "spearman_rho": 0.4,
+      "top_quintile_return_pct": 5.0,
+      "target": "target_60d_excess_return",
+      "sample_size": 15,
+      "features_count": 2,
+      "features": [
+        "pe",
+        "roce"
+      ],
+      "train_window": "2022Q1-2023Q1",
+      "test_window": "2023Q2-2023Q4",
+      "metrics": {
+        "test_spearman_rho": 0.4
+      },
+      "gate_passed": false,
+      "gate_rejection_reasons": [
+        "Evaluation sample size (15) below minimum statistical confidence requirement (40)."
+      ]
+    },
+    "v_weak_test": {
+      "version": "v_weak_test",
+      "created_at_utc": "2026-10-12 13:28:39",
+      "status": "REJECTED_GATE_FAILURE",
+      "model_type": "XGBoost-Ranker-MultiFactor",
+      "spearman_rho": -0.1,
+      "top_quintile_return_pct": 2.0,
+      "target": "target_60d_excess_return",
+      "sample_size": 50,
+      "features_count": 2,
+      "features": [
+        "pe",
+        "roce"
+      ],
+      "train_window": "2022Q1-2023Q1",
+      "test_window": "2023Q2-2023Q4",
+      "metrics": {
+        "test_spearman_rho": -0.1
+      },
+      "gate_passed": false,
+      "gate_rejection_reasons": [
+        "Spearman rank correlation (-0.100) below minimum gate threshold (0.05)."
+      ]
+    },
+    "v_valid_gate_pass": {
+      "version": "v_valid_gate_pass",
+      "created_at_utc": "2026-10-12 13:28:39",
+      "status": "ROLLED_BACK",
+      "model_type": "XGBoost-Ranker-MultiFactor",
+      "spearman_rho": 0.35,
+      "top_quintile_return_pct": 8.5,
+      "target": "target_60d_excess_return",
+      "sample_size": 50,
+      "features_count": 2,
+      "features": [
+        "pe",
+        "roce"
+      ],
+      "train_window": "2022Q1-2023Q1",
+      "test_window": "2023Q2-2023Q4",
+      "metrics": {
+        "test_spearman_rho": 0.35
+      },
+      "gate_passed": true,
+      "gate_rejection_reasons": []
+    }
+  },
+  "last_audit_ist": "2026-10-12 19:06:15 IST"
+}

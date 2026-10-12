@@ -565,3 +565,333 @@ tr:hover td {
   .grid-2 { grid-template-columns: 1fr; }
   .search-box-container { width: 220px; }
 }
+
+/* Data Freshness Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.status-badge-live {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+.status-badge-delayed {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+.status-badge-last-available {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.status-badge-demo {
+  background-color: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+.status-badge-unavailable {
+  background-color: rgba(244, 63, 94, 0.15);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+/* Horizon Selector Pill Bar */
+.horizon-selector-bar {
+  display: flex;
+  gap: 8px;
+  background-color: var(--bg-input);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  width: fit-content;
+}
+.horizon-pill-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.horizon-pill-btn:hover {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.horizon-pill-btn.active {
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  color: white;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.3);
+}
+
+/* Beginner Research Decision Summary Card */
+.beginner-summary-card {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(18, 26, 43, 0.85));
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.assessment-badge-large {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.assessment-attractive { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+.assessment-worth { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #0284c7; }
+.assessment-fair { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #64748b; }
+.assessment-expensive { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+.assessment-risk { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid #f43f5e; }
+.assessment-insufficient { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid #475569; }
+
+/* Educational Metric Drawer Accordion */
+.educational-drawers-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+.metric-drawer-card {
+  background-color: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+}
+.metric-drawer-card:hover {
+  border-color: var(--primary);
+  background-color: rgba(15, 23, 42, 0.9);
+}
+.metric-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.metric-drawer-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.metric-drawer-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary);
+}
+.metric-drawer-body {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Persistent Selected Company Context Header Bar */
+#company-context-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.95), rgba(11, 17, 30, 0.95));
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 24px;
+  font-size: 13px;
+  z-index: 50;
+}
+.context-company-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.context-symbol-badge {
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  color: white;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+}
+.context-company-name {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.context-meta-tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-light);
+}
+.context-price-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.context-price-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.context-change-val {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Risk Matrix 8-Dimension Grid & Badges */
+.risk-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  .risk-matrix-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.risk-matrix-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+.risk-matrix-card:hover {
+  border-color: rgba(56, 189, 248, 0.5);
+  background-color: var(--bg-card-hover);
+}
+.risk-matrix-card.status-issue {
+  border-left: 4px solid var(--danger);
+}
+.risk-matrix-card.status-no-issue {
+  border-left: 4px solid var(--success);
+}
+.risk-matrix-card.status-insufficient {
+  border-left: 4px solid var(--warning);
+}
+.risk-matrix-card.status-not-checked {
+  border-left: 4px solid var(--text-muted);
+}
+
+.risk-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.risk-status-no-issue {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+.risk-status-issue {
+  background-color: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+}
+.risk-status-insufficient {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+.risk-status-not-checked {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.4);
+}
+
+/* 5 Multibagger Pillar Cards */
+.pillar-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.pillar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  transition: all 0.2s ease;
+}
+.pillar-card:hover {
+  border-color: var(--primary);
+  background: var(--bg-card-hover);
+}
+.pillar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.pillar-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.pillar-score-badge {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* Enterprise Value to Equity Waterfall Card */
+.waterfall-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 18px;
+}
+.waterfall-step-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13px;
+}
+.waterfall-step-row:last-child {
+  border-bottom: none;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--primary);
+}
+
